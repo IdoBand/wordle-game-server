@@ -1,17 +1,8 @@
 import { query } from "express"
-import client from './clientConfig&Connect'
+import dbClient from "./clientConfig&Connect"
+
 
 export async function createDB() {
-    // const wordsTableCreationQuery = ` CREATE TABLE IF NOT EXISTS apples (
-    //     "id" SERIAL PRIMARY KEY,
-    //     "word" VARCHAR(50) NOT NULL
-    //     );`
-    
-    
-    // const wordsInsertQuery = `INSERT INTO apples (id, word) VALUES
-    //                         (default, 'red'),
-    //                         (default, 'green'),  
-    //                         (default, 'yellow');`
 
     const wordsTableCreationQuery = ` CREATE TABLE IF NOT EXISTS wordle_5_letters_words (
     "id" SERIAL PRIMARY KEY,
@@ -19,7 +10,7 @@ export async function createDB() {
     );`
 
 
-const wordsInsertQuery = `INSERT INTO wordle_5_letters_words (id, word) VALUES
+    const wordsInsertQuery = `INSERT INTO wordle_5_letters_words (id, word) VALUES
                         (default, 'POWER'),
                         (default, 'WORLD'),
                         (default, 'PIZZA'),
@@ -34,10 +25,11 @@ const wordsInsertQuery = `INSERT INTO wordle_5_letters_words (id, word) VALUES
                         (default, 'LEMON'),
                         (default, 'BASIC');`
     try {
+        const client = dbClient();
  
         // create the table
         await client.query(wordsTableCreationQuery)
-        await console.log('Table created successfully!')
+        console.log('Table created successfully!')
         // insert words
         await client.query(wordsInsertQuery)
         console.log('words inserted successfully!')
