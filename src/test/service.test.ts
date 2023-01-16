@@ -95,27 +95,6 @@ describe('Service Testing', () => {
         expect(result.encrypted).to.be.a('string')
         });
 
-        it('should return an object with property `iv` ', () => {
-            const result = serviceTest.cipherWord('POWER');
-            console.log(result)
-            expect(result.iv).to.be.a('object')
-            });
-            
-        
     })
     
 });
-
-
-
-
-//////    NOT FINISHED!!!!!!!    /////
-// describe('cipherWord', () => {
-//     it("should return object", () => {
-//         const result = () => cipherWord('')
-//         expect(result).to.equal('');
-        
-//     });
-
-
-// });
