@@ -1,10 +1,17 @@
 import { describe } from "node:test";
 import { expect } from "chai";
-import {cipherWord, decipherWord, lettersHeadToHead} from '../service'
+import { Service } from "../service";
+import { ImportMock } from 'ts-mock-imports'
+import * as clientConfigConnectModule from '../db/clientConfig&Connect';
+
+const mockClient = ImportMock.mockFunction(clientConfigConnectModule, 'default', () => {
+    return {}
+})
+const serviceTest = new Service()
 
 describe('lettersHeadToHead', () => {
     it("should return 5 'tile bull' for 'HELLO' vs 'HELLO'", () => {
-        const result = lettersHeadToHead('HELLO', 'HELLO')
+        const result = serviceTest.lettersHeadToHead('HELLO', 'HELLO')
         
         expect(result).to.deep.equals([
             [ 'H', 'tile-bull' ],
@@ -17,7 +24,7 @@ describe('lettersHeadToHead', () => {
 
     it("should return 1 'tile', 1 'tile-cow', 1 'tile', 1 'tile-cow', 1 'tile' for 'POWER' vs 'HELLO'", () => {
         
-        expect(lettersHeadToHead('POWER', 'HELLO')).to.deep.equals([
+        expect(serviceTest.lettersHeadToHead('POWER', 'HELLO')).to.deep.equals([
             [ 'P', 'tile' ],
             [ 'O', 'tile-cow' ],
             [ 'W', 'tile' ],
@@ -28,7 +35,7 @@ describe('lettersHeadToHead', () => {
 
     it("should return 5 'tile' for 'GLOVE' vs 'SUSHI'", () => {
         
-        expect(lettersHeadToHead('GLOVE', 'SUSHI')).to.deep.equals([
+        expect(serviceTest.lettersHeadToHead('GLOVE', 'SUSHI')).to.deep.equals([
             [ 'G', 'tile' ],
             [ 'L', 'tile' ],
             [ 'O', 'tile' ],
@@ -47,7 +54,7 @@ describe('decipherWord', () => {
              45
           ];
         const encryptedWord = 'b37e39ca4f5b353053f28cb753359bae';
-        expect(decipherWord(iVector, encryptedWord)).to.equal('ABORT');
+        expect(serviceTest.decipherWord(iVector, encryptedWord)).to.equal('ABORT');
         
     });
 
@@ -60,7 +67,7 @@ describe('decipherWord', () => {
                  45
               ];
             const encryptedWord = 'b37e39ca4f5b353053f28cb753359bae';
-            const result = decipherWord(iVector, encryptedWord);
+            const result = serviceTest.decipherWord(iVector, encryptedWord);
             expect(result).to.throws();
         } catch (e){
             expect(e.toString()).to.equals("Error: error:1C800064:Provider routines::bad decrypt")
@@ -75,7 +82,7 @@ describe('decipherWord', () => {
              45
           ];
         const encryptedWord = 'a37e39ca4f5b353053f28cb753359bae';
-        const result = () => decipherWord(iVector, encryptedWord);
+        const result = () => serviceTest.decipherWord(iVector, encryptedWord);
         expect(result).to.throws();
     });
 
