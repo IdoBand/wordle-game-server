@@ -1,5 +1,5 @@
 import { Client } from "pg"
-import dbClient from './db/clientConfig&Connect';
+import dbClient from '../db/clientConfig&Connect';
 
 
 export class Dao {

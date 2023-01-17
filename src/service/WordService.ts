@@ -1,5 +1,5 @@
 import  crypto, { createDecipheriv }  from 'crypto';
-import { Dao } from './dao'
+import { Dao } from '../dao/WordDao'
 
 
 // interface cipherObject {

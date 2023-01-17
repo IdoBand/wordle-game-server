@@ -1,4 +1,4 @@
-import { Service } from './service'
+import { Service } from '../service/WordService'
 
 export class Controller {
     service: Service

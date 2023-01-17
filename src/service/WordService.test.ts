@@ -1,6 +1,6 @@
 import { describe } from "node:test";
 import { expect } from "chai";
-import { Service } from "../service";
+import { Service } from "./WordService";
 import { ImportMock } from 'ts-mock-imports'
 import * as clientConfigConnectModule from '../db/clientConfig&Connect';
 

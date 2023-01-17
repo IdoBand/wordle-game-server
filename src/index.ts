@@ -6,10 +6,11 @@ async function main() {
     await initiateApp();
 
     // COMMENT OUT createDB() AFTER FIRST RUN TO AVOID RUNNING UNNECESSARY QUERIES ! ! !
-    // createDB();
-
-    app.listen(4000, '0.0.0.0', () => {
-        console.log('Server is running at port 4000');
+    createDB();
+    
+    const port: number = 3333;
+    app.listen(port, '0.0.0.0', () => {
+        console.log(`Server is running at port ${port}`);
     });
 };
 
