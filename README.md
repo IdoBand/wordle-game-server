@@ -4,7 +4,7 @@ IMPORTANT ! ! !
 <code>clientConfig&Connect.ts</code> is located at ---------> <code>src/db/clientConfig&Connect.ts</code>.
 
 2. inside <code>index.ts</code> theres a function call at line 9 >>> <code>createDB()</code>. 
-   if client was configed properly, it should create the DB. make sure to comment it out after running 
+   if client was configured properly, it should create the DB. make sure to comment it out after running 
    the server for the first time.
 
-3.  to run server ---------> <code>npm start</code>.
+3.  AFTER stages 1,2 ---> to run server ---> <code>npm start</code>.

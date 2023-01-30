@@ -4,8 +4,6 @@ import { createDB } from './db/dbCreation';
 async function main() {
     // create Client, connect to DB, initiate controller
     await initiateApp();
-
-    // connect to database
     
     // COMMENT OUT createDB() AFTER FIRST RUN TO AVOID RUNNING UNNECESSARY QUERIES ! ! !
     // createDB();

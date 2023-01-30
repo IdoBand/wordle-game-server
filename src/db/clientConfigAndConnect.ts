@@ -4,7 +4,7 @@ let client: Client;
 export async function createAndConnectClient() {
     const defaultClient = new Client({
         host: 'localhost',
-        password: 'gruni123',
+        password: '',
         user: 'postgres',});
     console.log('pg client created')
     try {

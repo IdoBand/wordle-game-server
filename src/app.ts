@@ -18,6 +18,8 @@ export async function initiateApp() {
 }
 
 //////////////////     M I D D L E W A R E     //////////////////
+// not in use because there is no action that requires auth.
+// signing in will give you a token anyway.
 function authenticateTokenMiddleWare(req: Request, res: Response, next: NextFunction){
     const authHeader = req.headers['authorization'];
     const token = authHeader
@@ -34,8 +36,8 @@ function authenticateTokenMiddleWare(req: Request, res: Response, next: NextFunc
 const app = express();
 
 app.use(cors());
-// app.use(authenticateTokenMiddleWare)
 app.use(bodyParser.json());
+// app.use(authenticateTokenMiddleWare);
 
 app.get('/getWord', async (req: Request, res: Response) => {
     const encryptedObject = await controller.getWord();

@@ -1,9 +1,9 @@
 import { ImportMock } from "ts-mock-imports";
-import * as clientConfigConnectModule from './db/clientConfig&Connect';
-import {EncryptedObject} from './assets/interface'
+import * as clientConfigConnectModule from './db/clientConfigAndConnect';
+import {cipherObject} from './assets/interface'
 const mockClient: {query: unknown} = {query: null}
 ImportMock.mockFunction(clientConfigConnectModule, 'default', mockClient);
-let x: EncryptedObject;
+let x: cipherObject;
 import app from './app'
 import request from 'supertest'
 import { expect } from "chai";
