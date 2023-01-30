@@ -1,21 +1,40 @@
-//////////////////     server    //////////////////
-import express, { Request, Response } from 'express';
+//////////////////     S E R V E R    //////////////////
+import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-
-//////////////////       DB      //////////////////
-import { createAndConnectClient } from './db/clientConfig&Connect';
+import { loginSignWithJWT } from './service/AuthService';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
+//////////////////       D B      //////////////////
+import { createAndConnectClient } from './db/clientConfigAndConnect';
 import { Controller } from './controller/WordController';
 
-let controller: Controller;
+// for testing purposes only - initiate the controller manually.
+let controller: Controller // = new Controller;
 export async function initiateApp() {
     await createAndConnectClient();
     controller = new Controller();
-};
+}
+
+//////////////////     M I D D L E W A R E     //////////////////
+function authenticateTokenMiddleWare(req: Request, res: Response, next: NextFunction){
+    const authHeader = req.headers['authorization'];
+    const token = authHeader
+    if (token === null) { return res.sendStatus(401) } // no token was sent
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err: Error) => {
+        if (err) return res.sendStatus(403); // not a valid token
+        res.send('auth success!')
+        // if we got to this line, the token sent was valid.
+        next()
+    });
+}
 
 const app = express();
 
 app.use(cors());
+// app.use(authenticateTokenMiddleWare)
 app.use(bodyParser.json());
 
 app.get('/getWord', async (req: Request, res: Response) => {
@@ -23,13 +42,15 @@ app.get('/getWord', async (req: Request, res: Response) => {
     res.send(encryptedObject);
     });
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('test')
-});
-
 app.post('/guessWord', async (req: Request, res: Response) => {
     const result = await controller.checkWord(req.body.iv, req.body.encryptedWord, req.body.guess);
     res.send(result); 
 });
+
+app.post('/login', (req: Request, res: Response) => {
+    const accessToken = loginSignWithJWT(req.body.firstName, req.body.lastName, req.body.email);
+    res.json({accessToken: accessToken});
+});
+
 
 export default app;

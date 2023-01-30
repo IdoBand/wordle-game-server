@@ -1,18 +1,16 @@
 import { Client } from "pg"
-import dbClient from '../db/clientConfig&Connect';
-
+import dbClient from '../db/clientConfigAndConnect';
 
 export class Dao {
     client: Client;
     constructor() {
         this.client = dbClient();
-    };
-
-    async getWordFromDB(randomIndex: number){
-    
-        const sqlQuery = `SELECT word FROM wordle_5_letters_words where id =${randomIndex}`;
+    }
+    async getWordFromDB(){
+        const sqlQuery = 'SELECT word FROM wordle_5_letters_words ORDER BY RANDOM() LIMIT 1;'
         const response = await this.client.query(sqlQuery);
-        const row = await response.rows[0];
+        const row = response.rows[0];
+        console.log(row.word)
         return row.word;
-    };
-};
+    }
+}

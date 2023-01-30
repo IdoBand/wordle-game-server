@@ -1,5 +1,5 @@
 import { query } from "express"
-import dbClient from "./clientConfig&Connect"
+import dbClient from "./clientConfigAndConnect"
 
 
 export async function createDB() {
