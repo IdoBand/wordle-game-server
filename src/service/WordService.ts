@@ -43,19 +43,53 @@ export class Service {
     }
     
     lettersHeadToHead(userGuess: string, realWord: string): Array<[]> {
-    
+        const occurrences = this.lettersCountMap(realWord)
         const classNamesResultArray = [];
-        for (let i = 0 ; i <= 4; i++) {
-      
-            const letter = userGuess[i];
-            if (userGuess[i] === realWord[i]) {
-                classNamesResultArray.push([letter, 'tile-bull']);
-            } else if (realWord.includes(letter)) {
-                classNamesResultArray.push([letter, 'tile-cow']);
+        for (let i = 0 ; i < 5; i++) {
+            const userLetter = userGuess[i];
+            const realLetter = realWord[i]
+            if (userLetter === realLetter) {
+                classNamesResultArray.push([userLetter, 'bg-bull']);
+                const indices = occurrences.get(userLetter)
+                indices.count -= 1
+                occurrences.set(userLetter, indices)
+                for (let j = 0 ; j <= i; j++) {
+                    if (classNamesResultArray[j][1] === 'bg-cow' && 
+                    (occurrences.get(userLetter).indexes.includes(i)) &&
+                    classNamesResultArray[j][0] === userLetter) {
+
+                        classNamesResultArray[j][1] = 'tile'
+                    }
+                }
+               
+            } else if (realWord.includes(userLetter) &&
+                occurrences.get(userLetter).count > 0 && 
+                occurrences.get(userLetter).cow < occurrences.get(userLetter).count) {
+                    classNamesResultArray.push([userLetter, 'bg-cow']);
+                    const indices = occurrences.get(userLetter)
+                    indices.cow += 1
+                    occurrences.set(userLetter, indices)
             } else {
-                classNamesResultArray.push([letter, 'tile']);
+                classNamesResultArray.push([userLetter, 'tile']);
             }
         }
         return classNamesResultArray;
     }
+    lettersCountMap (word: string): Map<string, any>{
+        const occurrences = new Map()
+        for (let i = 0 ; i < 5; i++) {
+            let letter = word[i]
+            if (!occurrences.get(letter)) {
+                occurrences.set(letter, {indexes: [i], count: 1, cow: 0})
+            } else {
+                const indices = occurrences.get(letter);
+                indices.indexes.append[i]
+                indices.count += 1
+                occurrences.set(letter, indices);
+            }
+        }
+        
+        return occurrences
+    }
+
 }
