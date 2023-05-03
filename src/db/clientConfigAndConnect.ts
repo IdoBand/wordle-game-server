@@ -13,7 +13,7 @@ export async function createAndConnectClient() {
         client = defaultClient;
     } catch(e) {
         console.log('client was unable to connect to pg', e.toString());
-        process.exit(1);
+
     }
 }
 
