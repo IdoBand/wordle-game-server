@@ -8,7 +8,7 @@ async function main() {
     // COMMENT OUT createDB() AFTER FIRST RUN TO AVOID RUNNING UNNECESSARY QUERIES ! ! !
     // createDB();
     
-    const port = 3333;
+    const port = 443;
     app.listen(port, '0.0.0.0', () => {
         console.log(`Server is running at port ${port}`);
     });
