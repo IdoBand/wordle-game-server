@@ -1,11 +1,17 @@
 import { Client } from 'pg';
+import dotenv from 'dotenv'
+dotenv.config()
 
 let client: Client;
 export async function createAndConnectClient() {
     const defaultClient = new Client({
+        user: process.env.POSTGRES_USER,
         host: process.env.POSTGRES_HOST,
+        database: process.env.POSTGRES_DATABASE,
         password: process.env.POSTGRES_PASS,
-        user: process.env.POSTGRES_USER,});
+        port: +process.env.POSTGRES_PORT,
+        ssl: true
+    });
     console.log('pg client created')
     try {
         await defaultClient.connect()
