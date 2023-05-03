@@ -17,7 +17,7 @@ export async function createDB() {
                         (default, 'BUILD'),
                         (default, 'SUSHI'),
                         (default, 'WIRED'),
-                        (default, 'WIERD'),
+                        (default, 'WEIRD'),
                         (default, 'HELLO'),
                         (default, 'REACT'),
                         (default, 'ABORT'),
