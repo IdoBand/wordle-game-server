@@ -1,13 +1,13 @@
 import { describe } from "node:test";
 import { expect } from "chai";
-import { Service } from "./WordService";
+import { GameService } from "./GameService";
 import { ImportMock } from 'ts-mock-imports'
 import * as clientConfigConnectModule from '../db/clientConfigAndConnect';
 
 const mockClient = ImportMock.mockFunction(clientConfigConnectModule, 'default', () => {
     return {}
 })
-const serviceTest = new Service();
+const serviceTest = new GameService();
 
 describe('Service Testing', () => {
     describe('lettersHeadToHead()', () => {

@@ -8,29 +8,17 @@ import dotenv from 'dotenv';
 dotenv.config();
 //////////////////       D B      //////////////////
 import { createAndConnectClient } from './db/clientConfigAndConnect';
-import { Controller } from './controller/WordController';
+import { GameController } from './controller/GameController';
+import { log } from 'console';
+import { UserController } from './controller/UserController';
 
 // for testing purposes only - initiate the controller manually.
-let controller: Controller // = new Controller;
+let gameController: GameController // = new Controller;
+let userController: UserController
 export async function initiateApp() {
     await createAndConnectClient();
-    controller = new Controller();
-}
-
-//////////////////     M I D D L E W A R E     //////////////////
-// not in use because there is no action that requires auth.
-// signing in will give you a token anyway.
-function authenticateTokenMiddleWare(req: Request, res: Response, next: NextFunction){
-    const authHeader = req.headers['authorization'];
-    const token = authHeader
-    if (token === null) { return res.sendStatus(401) } // no token was sent
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err: Error) => {
-        if (err) return res.sendStatus(403); // not a valid token
-        res.send('auth success!')
-        // if we got to this line, the token sent was valid.
-        next()
-    });
+    gameController = new GameController();
+    userController = new UserController()
 }
 
 const app = express();
@@ -44,12 +32,12 @@ app.get('/test', async (req: Request, res: Response) => {
 });
 
 app.get('/getWord', async (req: Request, res: Response) => {
-    const encryptedObject = await controller.getWord();
+    const encryptedObject = await gameController.getWord();
     res.send(encryptedObject);
 });
 
 app.post('/guessWord', async (req: Request, res: Response) => {
-    const result = await controller.checkWord(req.body.iv, req.body.encryptedWord, req.body.guess);
+    const result = await gameController.checkWord(req.body.iv, req.body.encryptedWord, req.body.guess);
     res.send(result); 
 });
 
@@ -58,5 +46,29 @@ app.post('/login', (req: Request, res: Response) => {
     res.json({accessToken: accessToken});
 });
 
+app.post('/user', async (req: Request, res: Response) => {
+    const result = await userController.handleUserLogin(req.body)
+    res.send(JSON.stringify({
+        ...req.body,
+        added: result
+    }))
+})
+
+app.post('/saveGame', async (req: Request, res: Response) => {
+    const result = await gameController.saveGame(req.body)
+    res.send(JSON.stringify(req.body))
+});
+app.post('/getUncompletedGame', async (req: Request, res: Response) => {
+    const result = await gameController.getUncompletedGame(req.body.userId)
+    res.send(JSON.stringify(result))
+});
+app.post('/deleteGame', async (req: Request, res: Response) => {
+    const result = await gameController.deleteGameById(req.body.gameId)
+    res.send(JSON.stringify(result))
+});
+app.get('/getLeaderBoard', async (req: Request, res: Response) => {
+    const result = await gameController.getLeaderBoard()
+    res.send(JSON.stringify(result))
+});
 
 export default app;
